@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Roccat_Talk.TalkFX;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -18,6 +19,9 @@ namespace Roccat_Talk.RyosTalkFX
         private readonly Action<IntPtr, byte> _setLedOn;
         private readonly Action<IntPtr, byte> _setLedOff;
         private readonly Action<IntPtr, byte[]> _set_all_LEDS;
+        private readonly Action<IntPtr, byte[], byte[], byte> _set_all_LEDSFX;
+        private readonly Action<IntPtr, byte[], Color[], byte> _set_all_LEDSFX_struct;
+        private readonly Action<IntPtr, byte[], byte[], byte[], byte[], byte> _set_all_LEDSFX_individual;
 
         public RyosTalkFXConnection()
         {
@@ -31,6 +35,9 @@ namespace Roccat_Talk.RyosTalkFX
                 _setLedOn = TalkFxBindings.RyosMKPRO.set_LED_on_x64;
                 _setLedOff = TalkFxBindings.RyosMKPRO.set_LED_off_x64;
                 _set_all_LEDS = TalkFxBindings.RyosMKPRO.Set_all_LEDS_x64;
+                _set_all_LEDSFX = TalkFxBindings.RyosMKFX.Set_all_LEDSFX_x64;
+                _set_all_LEDSFX_struct = TalkFxBindings.RyosMKFX.Set_all_LEDSFX_struct_x64;
+                _set_all_LEDSFX_individual = TalkFxBindings.RyosMKFX.Set_all_LEDSFX_individual_x64;
             }
             else
             {
@@ -42,6 +49,9 @@ namespace Roccat_Talk.RyosTalkFX
                 _setLedOn = TalkFxBindings.RyosMKPRO.set_LED_on_x86;
                 _setLedOff = TalkFxBindings.RyosMKPRO.set_LED_off_x86;
                 _set_all_LEDS = TalkFxBindings.RyosMKPRO.Set_all_LEDS_x86;
+                _set_all_LEDSFX = TalkFxBindings.RyosMKFX.Set_all_LEDSFX_x86;
+                _set_all_LEDSFX_struct = TalkFxBindings.RyosMKFX.Set_all_LEDSFX_struct_x86;
+                _set_all_LEDSFX_individual = TalkFxBindings.RyosMKFX.Set_all_LEDSFX_individual_x86;
             }
         }
 
@@ -146,6 +156,46 @@ namespace Roccat_Talk.RyosTalkFX
         private static byte[] ConvertKeyboardState(IEnumerable<bool> keyboardState)
         {
             return keyboardState.Select(Convert.ToByte).ToArray();
+        }
+
+        /// <summary>
+        /// Sends the specified LED configuration to the Ryos MK FX keyboard
+        /// </summary>
+        /// <remarks>It is advisable to use this method for all advanced usecases for Ryos MK FX keyboard.</remarks>
+        /// <param name="keyState">A byte array where the index represents the Key code and the value the LED status 0 - off, 1 - on</param>
+        /// <param name="keyColor">
+        /// A Color array where the index represents the Key code and the struct contains RGB intensity values:
+        /// 0 - red first key, 1 - green first key, 2 - blue first key, 3 - red second key, ...
+        /// </param>
+        /// <param name="layout">A byte which represents keyboard layout: DE - 0x00, US - 0x01, JP - 0x02</param>
+        public void SetMkFxKeyboardState(byte[] keyState, byte[] keyColor, byte layout)
+        {
+            _set_all_LEDSFX(RoccatHandle, keyState, keyColor, layout);
+        }
+
+        /// <summary>
+        /// Sends the specified LED configuration to the Ryos MK FX keyboard
+        /// </summary>
+        /// <remarks>It is advisable to use this method for all advanced usecases for Ryos MK FX keyboard.</remarks>
+        /// <param name="keyState">A byte array where the index represents the Key code and the value the LED status 0 - off, 1 - on</param>
+        /// <param name="rgbStruct">A Color array where the index represents the Key code and the struct contains RGB intensity values</param>
+        /// <param name="layout">A byte which represents keyboard layout: DE - 0x00, US - 0x01, JP - 0x02</param>
+        public void SetMkFxKeyboardState(byte[] keyState, Color[] rgbStruct, byte layout)
+        {
+            _set_all_LEDSFX_struct(RoccatHandle, keyState, rgbStruct, layout);
+        }
+
+        /// <summary>
+        /// Sends the specified LED configuration to the Ryos MK FX keyboard
+        /// </summary>
+        /// <remarks>It is advisable to use this method for all advanced usecases for Ryos MK FX keyboard.</remarks>
+        /// <param name="keyState">A byte array where the index represents the Key code and the value the LED status 0 - off, 1 - on</param>
+        /// <param name="red">A byte array where the index represents the Key code and the value the red LED intensity</param>
+        /// <param name="green">A byte array where the index represents the Key code and the value the green LED intensity</param>
+        /// <param name="blue">A byte array where the index represents the Key code and the value the blue LED intensity</param>
+        /// <param name="layout">A byte which represents keyboard layout: DE - 0x00, US - 0x01, JP - 0x02</param>
+        public void SetMkFxKeyboardState(byte[] keyState, byte[] red, byte[] green, byte[] blue, byte layout) {
+            _set_all_LEDSFX_individual(RoccatHandle, keyState, red, green, blue, layout);
         }
     }
 }

@@ -1,3 +1,4 @@
+using Roccat_Talk.TalkFX;
 using System;
 using System.Runtime.InteropServices;
 
@@ -99,6 +100,28 @@ namespace Roccat_Talk
 
             [DllImport("CroccatTalkWrapper\\win32-x86-64\\talkfx-c.dll", EntryPoint = "All_Key_Blinking", CallingConvention = CallingConvention.Cdecl)]
             public static extern void All_Key_Blinking_x64(IntPtr handle, int DelayTime, int LoopTimes);
+        }
+
+        internal static class RyosMKFX
+        {
+            /* setting RGB on Ryos MK FX */
+            [DllImport("CroccatTalkWrapper\\win32-x86\\talkfx-c.dll", EntryPoint = "Set_all_LEDSFX", CallingConvention = CallingConvention.Cdecl)]
+            public static extern void Set_all_LEDSFX_x86(IntPtr handle, byte[] ucLEDOnOff, byte[] ucLEDRGB, byte layout);
+
+            [DllImport("CroccatTalkWrapper\\win32-x86-64\\talkfx-c.dll", EntryPoint = "Set_all_LEDSFX", CallingConvention = CallingConvention.Cdecl)]
+            public static extern void Set_all_LEDSFX_x64(IntPtr handle, byte[] ucLEDOnOff, byte[] ucLEDRGB, byte layout);
+
+            [DllImport("CroccatTalkWrapper\\win32-x86\\talkfx-c.dll", EntryPoint = "Set_all_LEDSFX_struct", CallingConvention = CallingConvention.Cdecl)]
+            public static extern void Set_all_LEDSFX_struct_x86(IntPtr handle, byte[] ucLEDOnOff, Color[] strctLEDRGB, byte layout);
+
+            [DllImport("CroccatTalkWrapper\\win32-x86-64\\talkfx-c.dll", EntryPoint = "Set_all_LEDSFX_struct", CallingConvention = CallingConvention.Cdecl)]
+            public static extern void Set_all_LEDSFX_struct_x64(IntPtr handle, byte[] ucLEDOnOff, Color[] strctLEDRGB, byte layout);
+
+            [DllImport("CroccatTalkWrapper\\win32-x86\\talkfx-c.dll", EntryPoint = "Set_all_LEDSFX_individual", CallingConvention = CallingConvention.Cdecl)]
+            public static extern void Set_all_LEDSFX_individual_x86(IntPtr handle, byte[] ucLEDOnOff, byte[] ucLEDRed, byte[] ucLEDGreen, byte[] ucLEDBlue, byte layout);
+
+            [DllImport("CroccatTalkWrapper\\win32-x86-64\\talkfx-c.dll", EntryPoint = "Set_all_LEDSFX_individual", CallingConvention = CallingConvention.Cdecl)]
+            public static extern void Set_all_LEDSFX_individual_x64(IntPtr handle, byte[] ucLEDOnOff, byte[] ucLEDRed, byte[] ucLEDGreen, byte[] ucLEDBlue, byte layout);
         }
     }
 }
