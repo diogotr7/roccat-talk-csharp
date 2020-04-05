@@ -6,8 +6,8 @@ namespace Roccat_Talk
 {
     internal static class TalkFxBindings
     {
-        private const string x86DllPath = "CroccatTalkWrapper\\win32-x86\\talkfx-c.dll";
-        private const string x64DllPath = "CroccatTalkWrapper\\win32-x86-64\\talkfx-c.dll";
+        private const string x86DllPath = "talkfx-c.dll";
+        private const string x64DllPath = "talkfx-c-x64.dll";
 
         [DllImport(x86DllPath, EntryPoint = "newRoccatTalkHandle", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr newRoccatTalkHandle_x86();

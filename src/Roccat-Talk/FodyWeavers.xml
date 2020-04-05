@@ -1,0 +1,10 @@
+﻿<Weavers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="FodyWeavers.xsd">
+  <Costura>
+    <Unmanaged64Assemblies>
+      talkfx-c-x64
+    </Unmanaged64Assemblies>
+    <Unmanaged32Assemblies>
+      talkfx-c
+    </Unmanaged32Assemblies>
+  </Costura>
+</Weavers>
